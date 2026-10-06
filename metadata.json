@@ -1,0 +1,6 @@
+{
+  "name": "City Open World 3D",
+  "description": "An open world 3D city action game in landscape mode with vehicles and exploration",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- City Skyline and Game Silhouette -->
+    <!-- Highrise Left -->
+    <path
+        android:fillColor="#38bdf8"
+        android:pathData="M24,40 h14 v44 h-14 z" />
+    <!-- Highrise Center (Tall Skyscraper with spire) -->
+    <path
+        android:fillColor="#f97316"
+        android:pathData="M44,22 h20 v62 h-20 z" />
+    <path
+        android:fillColor="#f97316"
+        android:pathData="M52,14 h4 v8 h-4 z" />
+    <!-- Highrise Right -->
+    <path
+        android:fillColor="#fbbf24"
+        android:pathData="M70,34 h14 v50 h-14 z" />
+    <!-- Windows Left -->
+    <path
+        android:fillColor="#0f172a"
+        android:pathData="M28,46 h2 v2 h-2 z M34,46 h2 v2 h-2 z M28,54 h2 v2 h-2 z M34,54 h2 v2 h-2 z M28,62 h2 v2 h-2 z M34,62 h2 v2 h-2 z" />
+    <!-- Windows Center -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M48,30 h4 v3 h-4 z M56,30 h4 v3 h-4 z M48,40 h4 v3 h-4 z M56,40 h4 v3 h-4 z M48,50 h4 v3 h-4 z M56,50 h4 v3 h-4 z M48,60 h4 v3 h-4 z M56,60 h4 v3 h-4 z" />
+    <!-- Ground / Road Base -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M18,82 h72 v4 h-72 z" />
+    <!-- Speed/Road lines -->
+    <path
+        android:fillColor="#f97316"
+        android:pathData="M30,88 h12 v2 h-12 z M50,88 h12 v2 h-12 z M70,88 h12 v2 h-12 z" />
+</vector>
