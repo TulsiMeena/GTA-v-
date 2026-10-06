@@ -383,46 +383,63 @@
     function loadAllAssets() {
       const loader = new THREE.GLTFLoader();
 
-      // 1. Load Main City Model (User's authentic 3D City model with all ground & textures!)
-      loader.load(
-        'https://appassets.androidplatform.net/assets/city.glb',
-        function(gltf) {
-          cityModel = gltf.scene;
-          cityModel.updateMatrixWorld(true);
+      // 1. Load Main City Model with fallback to direct cloud url if local asset fails
+      function loadCityWithFallback(url, isFallback) {
+        loader.load(
+          url,
+          function(gltf) {
+            cityModel = gltf.scene;
+            cityModel.updateMatrixWorld(true);
 
-          cityModel.traverse(function(child) {
-            if (child.isMesh) {
-              cityMeshes.push(child);
-              if (child.material) {
-                if (Array.isArray(child.material)) {
-                  child.material.forEach(m => {
-                    m.roughness = Math.max(m.roughness || 0.6, 0.4);
-                    m.metalness = Math.min(m.metalness || 0.1, 0.4);
-                  });
-                } else {
-                  child.material.roughness = Math.max(child.material.roughness || 0.6, 0.4);
-                  child.material.metalness = Math.min(child.material.metalness || 0.1, 0.4);
+            cityModel.traverse(function(child) {
+              if (child.isMesh) {
+                cityMeshes.push(child);
+                if (child.material) {
+                  if (Array.isArray(child.material)) {
+                    child.material.forEach(m => {
+                      m.roughness = Math.max(m.roughness || 0.6, 0.4);
+                      m.metalness = Math.min(m.metalness || 0.1, 0.4);
+                    });
+                  } else {
+                    child.material.roughness = Math.max(child.material.roughness || 0.6, 0.4);
+                    child.material.metalness = Math.min(child.material.metalness || 0.1, 0.4);
+                  }
                 }
               }
-            }
-          });
-          scene.add(cityModel);
+            });
+            scene.add(cityModel);
 
-          loadedCount++;
-          checkAllLoaded();
-        },
-        function(xhr) {
-          if (xhr.lengthComputable && xhr.total > 0) {
-            const p = Math.round((xhr.loaded / xhr.total) * 100);
-            updateProgress('City Map', p);
+            loadedCount++;
+            checkAllLoaded();
+          },
+          function(xhr) {
+            if (xhr.lengthComputable && xhr.total > 0) {
+              const p = Math.round((xhr.loaded / xhr.total) * 100);
+              updateProgress(isFallback ? 'City Map (Cloud)' : 'City Map', p);
+            } else if (xhr.loaded > 0) {
+              const mb = (xhr.loaded / (1024 * 1024)).toFixed(1);
+              const progressText = document.getElementById('progress-text');
+              if (progressText) progressText.innerText = `Loading City (${mb} MB)...`;
+            }
+          },
+          function(err) {
+            console.error('City local load error:', err);
+            if (!isFallback) {
+              const progressText = document.getElementById('progress-text');
+              if (progressText) progressText.innerText = 'Streaming City from Cloud Backup...';
+              // Fallback to direct cloud download URL
+              loadCityWithFallback('https://drive.google.com/uc?export=download&id=1762kgD_-stHYIWni2Moq6tRFQ1zqviqt', true);
+            } else {
+              const progressText = document.getElementById('progress-text');
+              if (progressText) progressText.innerText = 'City model load failed. Check connection.';
+              loadedCount++;
+              checkAllLoaded();
+            }
           }
-        },
-        function(err) {
-          console.error('City load error', err);
-          loadedCount++;
-          checkAllLoaded();
-        }
-      );
+        );
+      }
+
+      loadCityWithFallback('https://appassets.androidplatform.net/assets/city.glb', false);
 
       // 2. Load Tree Model
       loader.load(
